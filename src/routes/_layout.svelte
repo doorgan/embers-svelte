@@ -1,22 +1,28 @@
-<script>
-	import Nav from '../components/Nav.svelte';
+<script context="module">
+  import { auth_data } from "auth/store.js";
+  export async function preload({ params, query }) {
+    const res = await this.fetch(`/auth_data`, {
+      credentials: "include"
+    });
+    const data = await res.json();
 
-	export let segment;
+    auth_data.update(x => (x = data));
+  }
 </script>
 
-<style>
-	main {
-		position: relative;
-		max-width: 56em;
-		background-color: white;
-		padding: 2em;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
+<script>
+  import Guest from "../layouts/guest.svelte";
+  import Logged from "../layouts/logged.svelte";
+
+  let layout = $auth_data.logged_in ? Logged : Guest;
+
+  export let segment;
+</script>
+
+<style lang="scss" global>
+  @import "./styles/global.scss";
 </style>
 
-<Nav {segment}/>
-
-<main>
-	<slot></slot>
-</main>
+<svelte:component this={layout}>
+  <slot />
+</svelte:component>

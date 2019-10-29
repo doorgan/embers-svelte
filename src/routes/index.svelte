@@ -1,50 +1,15 @@
-<style>
-  h1,
-  figure,
-  p {
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: 2.8em;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-
-  figure {
-    margin: 0 0 1em 0;
-  }
-
-  img {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 0 1em 0;
-  }
-
-  p {
-    margin: 1em auto;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      font-size: 4em;
-    }
-  }
-</style>
+<script>
+  import { auth_data } from "auth/store.js";
+  import Landing from "./_landing.svelte";
+</script>
 
 <svelte:head>
-  <title>Sapper project template</title>
+  <title>Embers</title>
 </svelte:head>
-
-<h1>Great success!</h1>
-
-<figure>
-  <img alt="Borat" src="great-success.png" />
-  <figcaption>HIGH FIVE!</figcaption>
-</figure>
-
-<p>
-  <strong>Testing heroku deploy</strong>
-</p>
+<section id="hero">
+  {#if $auth_data.user}
+    <h1>Hola @{$auth_data.user.username}</h1>
+  {:else}
+    <Landing />
+  {/if}
+</section>
